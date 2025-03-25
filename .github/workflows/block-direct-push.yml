@@ -1,0 +1,17 @@
+name: Block Direct Push
+
+on:
+  push:
+    branches:
+      - main  # Cambia con il branch che vuoi proteggere
+
+jobs:
+  prevent-direct-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if push is from a PR
+        run: |
+          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "🚫 Push diretto su main non consentito! Usa una pull request."
+            exit 1
+          fi
